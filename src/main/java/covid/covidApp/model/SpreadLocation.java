@@ -9,6 +9,6 @@ public class SpreadLocation {
 
     private String state;
     private String country;
-    private int totalCases;
-    private int newUpdates;
+    private int latestTotalCases;
+    private int emergencyUpdates;
 }
