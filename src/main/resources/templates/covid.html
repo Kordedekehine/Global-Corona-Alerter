@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>NDCD covid update</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container">
+<h1>Coronavirus Alert</h1>
+<p>This application give latest updates on current situation of Covid around the World</p>
+
+<div class="jumbotron">
+    <h1 class="display-4" th:text="${totalCasesAlert}"></h1>
+    <p class="lead">Latest Case Update:</p>
+    <hr class="my-4">
+    <p>
+        <span>Last Updated Case:</span>
+        <span th:text="${totalNewCases}"></span>
+    </p>
+
+</div>
+
+    <table class="table">
+        <tr>
+            <th>State</th>
+            <th>Country</th>
+            <th>Total Alert Cases</th>
+            <th>Last Update</th>
+        </tr>
+        <tr th:each="spreadLocations : ${spreadLocation}">
+            <td th:text="${spreadLocation.state}"></td>
+            <td th:text="${spreadLocation.country}"></td>
+            <td th:text="${spreadLocation.latestTotalCases}">0</td>
+            <td th:text="${spreadLocation.emergencyUpdates}">0</td>
+        </tr>
+    </table>
+</div>
+</body>
+
+</html>
