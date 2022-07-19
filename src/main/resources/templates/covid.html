@@ -8,17 +8,20 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 
-<body>
+<body style ="background: #FF1493;">
 <div class="container">
 <h1>Coronavirus Alert</h1>
 <p>This application give latest updates on current situation of Covid around the World</p>
+<!--    <p style ="background: #FF0000;" th:styleappend = "${covid} ? 'color: blue' : 'color: black' ">-->
+<!--        Some Text 1-->
+<!--    </p>-->
 
-<div class="jumbotron">
+<div style ="background: #FFFFFF;" class="jumbotron">
     <h1 class="display-4" th:text="${totalCasesAlert}"></h1>
     <p class="lead">Latest Case Update:</p>
     <hr class="my-4">
     <p>
-        <span>Last Updated Case:</span>
+        <span >Last Updated Case:</span>
         <span th:text="${totalNewCases}"></span>
     </p>
 
@@ -31,7 +34,7 @@
             <th>Total Alert Cases</th>
             <th>Last Update</th>
         </tr>
-        <tr th:each="spreadLocations : ${spreadLocation}">
+        <tr th:each="spreadLocation : ${spreadLocations}">
             <td th:text="${spreadLocation.state}"></td>
             <td th:text="${spreadLocation.country}"></td>
             <td th:text="${spreadLocation.latestTotalCases}">0</td>

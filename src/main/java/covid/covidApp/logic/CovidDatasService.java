@@ -1,8 +1,6 @@
 package covid.covidApp.logic;
 
-import covid.covidApp.model.SpreadLocation;
-import lombok.Data;
-import lombok.Getter;
+import covid.covidApp.model.SpreadLocations;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,9 +26,9 @@ public class CovidDatasService {
 
     private static String CORONA_DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
 
-    private List<SpreadLocation> allDatas = new ArrayList<>();
+    private List<SpreadLocations> allDatas = new ArrayList<>();
 
-    public List<SpreadLocation> getAllDatas() {
+    public List<SpreadLocations> getAllDatas() {
         return allDatas;
     }
 
@@ -61,18 +59,23 @@ public class CovidDatasService {
      * bean is initialized. We can have only one method annotated with @PostConstruct annotation.
      * This annotation is part of Common Annotations API and it's part of JDK module javax.
      *
+     * SCHEDULE ANNOTATION
+     * It is use for enabling task scheduling for our applications, it takes effect when placed on method and inside the
+     * main class
+     * it is set with cron generator to be able to restart every one 1 seconds
+     *
      * @throws IOException
      * @throws InterruptedException
      */
     @PostConstruct
-    @Scheduled(cron = "* * 1 * * *")
+    @Scheduled(cron = "* * 1 * * *")//every one seconds
     public void getVirusData() throws IOException, InterruptedException{
-        List<SpreadLocation> latestUpdates = new ArrayList<>();
+        List<SpreadLocations> latestUpdates = new ArrayList<>();
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create(CORONA_DATA_URL)).build();
         HttpResponse<String> httpResponse = httpClient.send(httpRequest,HttpResponse.BodyHandlers.ofString());
-        System.out.println(httpResponse.body());
        StringReader stringReader = new StringReader(httpResponse.body());
+        System.out.println(httpResponse.body());
         /**
          * Here we are working with CSV file library rest Api-(we have to implement the dependency to use it)
          * We set the response inside the string reader inside the csv record(to keep track),setting the first record(output) as the header
@@ -90,14 +93,14 @@ public class CovidDatasService {
          * then we affirm the latest updates
          */
         for (CSVRecord record : csvRecords) {
-         SpreadLocation spreadLocation = new SpreadLocation();
-         spreadLocation.setState(record.get("Province/State"));
-         spreadLocation.setCountry(record.get("Country/Region"));
+         SpreadLocations spreadLocations = new SpreadLocations();
+         spreadLocations.setState(record.get("Province/State"));
+         spreadLocations.setCountry(record.get("Country/Region"));
          int latestUpdatedCases = Integer.parseInt(record.get(record.size() - 1));
          int lastUpdatedCases = Integer.parseInt(record.get(record.size() - 2));
-         spreadLocation.setLatestTotalCases(latestUpdatedCases);
-         spreadLocation.setEmergencyUpdates(latestUpdatedCases - lastUpdatedCases);
-         latestUpdates.add(spreadLocation);
+         spreadLocations.setLatestTotalCases(latestUpdatedCases);
+         spreadLocations.setEmergencyUpdates(latestUpdatedCases - lastUpdatedCases);
+         latestUpdates.add(spreadLocations);
         }
         this.allDatas = latestUpdates;
     }
