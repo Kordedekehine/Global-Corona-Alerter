@@ -1,0 +1,8 @@
+{
+  "name": "global covid alert",
+  "description": "This app updates people all around the globe on latest covid alert.",
+  "keywords": [
+    "updates",
+    "Thymeleaf"
+    ]
+}

@@ -1,0 +1,1 @@
+java $JAVA_OPTS -cp target/classes:target/covidApp-0.0.1-SNAPSHOT.jar
